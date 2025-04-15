@@ -50,7 +50,14 @@ form.addEventListener('submit',async(event) =>{
         return;
     }
     try{
-        
+        // Exibir indicador de carregamento
+        Swal.fire({
+            title:'Consultando endereço......',
+            allowOutsideClick:false,
+            didOpen:() =>{
+                Swal.showLoading();
+            }
+        })
     }
 
 });
