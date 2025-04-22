@@ -172,10 +172,17 @@ document.querySelector('#novaConsulta').addEventListener('click', async () =>{
 // Função para realizar consulta via API  ViaCep
 const consultaViaCep = async (url) =>{
     try{
-        // Realiza a requisição HTTP GET para 
+        // Realiza a requisição HTTP GET para  a API ViaCEP
+        const response = await fetch (url);
+
+        // Verifica se a resposta da API foi bem-sucedida(status 200-299)
+        if(!response){
+            throw new Error('sucess')
+        }
+        
     }
     catch (erro){
-        // Propaga o erro para ser tartado pelo  código chamador
+        // Propaga o erro para ser tratado pelo  código chamador
         throw error;
     }
 };
