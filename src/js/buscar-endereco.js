@@ -76,7 +76,7 @@ form.addEventListener('submit', async (event) => {
         // Fechar indicador de carregamento
         Swal.close();
 
-        // Limpar resultados anteriores
+        // Limpar resultados anteriores,caso tenha algo na tabela 
         resultContainer.innerHTML = '';
 
         // Verificar se a consulta retorna resultados
@@ -98,46 +98,84 @@ form.addEventListener('submit', async (event) => {
                 th.textContent = headerText;
                 headerRow.appendChild(th);
             });
-
+            // Adiconanr linha de cabeçalho  ao thead e thead á table
             thead.appendChild(headerRow);
             table.appendChild(thead);
 
             // Criar corpo da tabela (tbody)
             const tbody = document.createElement('tbody');
+            // Criação da tabela
 
-            // Adicionar dados ao corpo da tabela
+            // Popular a tabela com os dados retornados pela API
+            // Iterar sobre os endereços retornados pela API
             data.forEach(item => {
+                // Criando uma nova linha para cada endereço
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.cep}</td>
-                    <td>${item.logradouro}</td>
-                    <td>${item.bairro}</td>
-                `;
+
+                // Criar e prencher célula da Cep
+                const cellCep = document.createElement('td');
+                cellCep.textContent = item.cep;
+                row.appendChild(cellCep);
+                // Criar e prencher célula da Logadouro
+                const cellLogadouro = document.createElement('td');
+                cellCep.textContent = item.logadouro;
+                row.appendChild(cellLogadouro);
+                // Criar e prencher célula da Bairro
+                const cellBairro = document.createElement('td');
+                cellCep.textContent = item.bairro;
+                row.appendChild(cellBairro);
+
+                // Adicionar  linha completa ao corpo da tabela
                 tbody.appendChild(row);
             });
 
+            // Adicionar corpo da tabela e a tabela completa
             table.appendChild(tbody);
             resultContainer.appendChild(table);
-        } else {
-            // Caso não haja resultados
-            resultContainer.innerHTML = '<p>Nenhum resultado encontrado.</p>';
+        }else{
+            await Swal.fire({
+                icon: 'info',
+                title:'Nenhum resultado encontrado',
+                text: 'Não foram encontrados endereços com critérios informados',
+                confirmButtonColor: '#117000'
+            });
         }
-    } catch (error) {
-        // Exibir erro caso a consulta falhe
-        Swal.fire({
-            icon: 'error',
-            title: 'Erro',
-            text: 'Não foi possível realizar a consulta. Tente novamente.',
-            confirmButtonColor: '#1177000'
+    } 
+    catch (error){
+        await Swal.fire({
+                icon: 'error',
+                title:'Erro na consulta',
+                text: 'Ocorreu um erro ao consultar o endereço.Tente Novamente.',
+                confirmButtonColor: '#117000'
         });
     }
 });
 
+
 // Adiciona evento de clique ao botão de nova consulta
-document.querySelector('#novaConsulta').addEventListener('click', () => {
-    // Limpar os campos e resultados
-    ufInput.value = '';
-    cidadeInput.value = '';
-    logadouroInput.value = '';
+document.querySelector('#novaConsulta').addEventListener('click', async () =>{
+    // Limpar formulario e área de resultados
+    form.reset();
     resultContainer.innerHTML = '';
+
+
+    await Swal.fire({
+        icon: 'sucess',
+        title:'Formulário Limpo',
+        text: 'Voce pode realizar uma nova consulta agora.',
+        confirmButtonColor: '#117000',
+        timer: 4000,
+        timerProgressBar: true
+    });
 });
+
+// Função para realizar consulta via API  ViaCep
+const consultaViaCep = async (url) =>{
+    try{
+        // Realiza a requisição HTTP GET para 
+    }
+    catch (erro){
+        // Propaga o erro para ser tartado pelo  código chamador
+        throw error;
+    }
+};
